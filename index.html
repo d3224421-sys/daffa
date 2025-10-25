@@ -18,6 +18,36 @@
             overflow-x: hidden;
         }
 
+        /* Music Controls */
+        .music-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(255, 0, 0, 0.8);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .music-controls:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+        }
+
+        .music-icon {
+            color: #000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
         /* Intro Screen */
         .intro-screen {
             position: fixed;
@@ -209,6 +239,37 @@
             z-index: -1;
         }
 
+        /* Volume Slider */
+        .volume-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+            display: none;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 5px;
+            background: #333;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff0000;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .title {
@@ -224,10 +285,36 @@
                 width: 40px;
                 height: 40px;
             }
+            
+            .music-controls {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .music-icon {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/tll0lw.mp3" type="audio/mp3">
+        Your browser doesn't support audio
+    </audio>
+
+    <!-- Music Controls -->
+    <div class="music-controls" id="musicToggle">
+        <div class="music-icon">♪</div>
+    </div>
+
+    <div class="volume-container" id="volumeContainer">
+        <input type="range" min="0" max="1" step="0.1" value="0.7" class="volume-slider" id="volumeSlider">
+    </div>
+
     <!-- Intro Screen -->
     <div class="intro-screen" id="introScreen">
         <img src="https://files.catbox.moe/agmwj4.jpg" alt="Kang Daffa" class="intro-image">
@@ -262,6 +349,7 @@
                 <div class="terminal-line info">System ready...</div>
                 <div class="terminal-line info">Gmail Spammer VIP activated</div>
                 <div class="terminal-line warning">Use responsibly!</div>
+                <div class="terminal-line info">Music loaded - Click ♪ to play</div>
             </div>
         </div>
     </div>
@@ -269,13 +357,77 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script>
+        // Audio setup
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeContainer = document.getElementById('volumeContainer');
+        
+        let isMusicPlaying = false;
+        
+        // Set initial volume
+        bgMusic.volume = 0.7;
+        
+        // Music toggle
+        musicToggle.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicToggle.style.background = 'rgba(255, 0, 0, 0.8)';
+                volumeContainer.style.display = 'none';
+            } else {
+                bgMusic.play().catch(e => {
+                    console.log('Audio play failed:', e);
+                    // Auto-play might be blocked, show instruction
+                    document.getElementById('terminal').innerHTML += 
+                        '<div class="terminal-line warning">Click the music button to start audio</div>';
+                });
+                musicToggle.style.background = 'rgba(0, 255, 0, 0.8)';
+                volumeContainer.style.display = 'block';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+        
+        // Volume control
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+        });
+        
+        // Right-click volume control for quick access
+        musicToggle.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            volumeContainer.style.display = volumeContainer.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // Ensure music loops properly
+        bgMusic.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+        
+        // Auto-start music after intro (with user interaction)
+        setTimeout(() => {
+            // Try to auto-play after intro
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicToggle.style.background = 'rgba(0, 255, 0, 0.8)';
+                    volumeContainer.style.display = 'block';
+                    document.getElementById('terminal').innerHTML += 
+                        '<div class="terminal-line success">Music auto-started!</div>';
+                }).catch(e => {
+                    document.getElementById('terminal').innerHTML += 
+                        '<div class="terminal-line info">Click the ♪ button to start music</div>';
+                });
+            }
+        }, 5000);
+
         // EmailJS setup
         emailjs.init("H7WlzLgZwqVAqRG2M");
         
         const emailConfig = {
             serviceID: 'service_93wskl6',
             templateID: 'template_wtbthp2',  
-            userID: 'H7WlzLgZwqVAqRG2M'
+            userID: 'H7WlzLgZwqRG2M'
         };
 
         // Handle intro animation
@@ -396,7 +548,9 @@
             "Gmail API connected", 
             "Spam engine warmed up",
             "Ready to destroy some inboxes",
-            "@KANGDAFFA power activated"
+            "@KANGDAFFA power activated",
+            "Music system operational",
+            "VIP mode engaged"
         ];
         
         setInterval(() => {
