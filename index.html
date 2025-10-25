@@ -209,21 +209,6 @@
             z-index: -1;
         }
 
-        /* Music Status */
-        .music-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 255, 0, 0.2);
-            padding: 10px 15px;
-            border-radius: 20px;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            border: 1px solid #00ff00;
-            z-index: 1001;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .title {
@@ -239,12 +224,6 @@
                 width: 40px;
                 height: 40px;
             }
-            
-            .music-status {
-                top: 10px;
-                right: 10px;
-                font-size: 10px;
-            }
         }
     </style>
 </head>
@@ -252,11 +231,7 @@
     <!-- Audio Element - AUTO PLAY -->
     <audio id="bgMusic" loop autoplay>
         <source src="https://files.catbox.moe/tll0lw.mp3" type="audio/mp3">
-        Your browser doesn't support audio
     </audio>
-
-    <!-- Music Status -->
-    <div class="music-status" id="musicStatus">MUSIC: PLAYING 🔊</div>
 
     <!-- Intro Screen -->
     <div class="intro-screen" id="introScreen">
@@ -301,59 +276,41 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script>
-        // Audio setup - FORCE AUTO PLAY
+        // FORCE MUSIC TO PLAY - NO BUTTONS!
         const bgMusic = document.getElementById('bgMusic');
-        const musicStatus = document.getElementById('musicStatus');
         
-        // Set music to auto-play and loop
+        // Set music properties
         bgMusic.volume = 0.7;
         bgMusic.loop = true;
         
-        // Force auto-play on page load
-        window.addEventListener('load', function() {
-            // Try to play immediately
+        // AGGRESSIVE AUTO-PLAY - TRY MULTIPLE TIMES
+        function forcePlayMusic() {
             bgMusic.play().then(() => {
-                console.log('Music auto-played successfully!');
-                musicStatus.textContent = 'MUSIC: PLAYING 🔊';
-                musicStatus.style.background = 'rgba(0, 255, 0, 0.2)';
-                musicStatus.style.border = '1px solid #00ff00';
-                musicStatus.style.color = '#00ff00';
-                
+                console.log('🎵 MUSIC PLAYING AUTOMATICALLY!');
                 // Update terminal
                 const terminal = document.getElementById('terminal');
                 if (terminal) {
-                    terminal.innerHTML += '<div class="terminal-line success">Background music auto-started!</div>';
+                    terminal.innerHTML += '<div class="terminal-line success">🎵 Background music playing!</div>';
                 }
-                
             }).catch(error => {
-                console.log('Auto-play blocked:', error);
-                musicStatus.textContent = 'CLICK TO PLAY 🔊';
-                musicStatus.style.background = 'rgba(255, 0, 0, 0.2)';
-                musicStatus.style.border = '1px solid #ff0000';
-                musicStatus.style.color = '#ff0000';
-                
-                // If auto-play blocked, play on first user interaction
-                const playOnInteraction = () => {
-                    bgMusic.play().then(() => {
-                        console.log('Music started after user interaction');
-                        musicStatus.textContent = 'MUSIC: PLAYING 🔊';
-                        musicStatus.style.background = 'rgba(0, 255, 0, 0.2)';
-                        musicStatus.style.border = '1px solid #00ff00';
-                        musicStatus.style.color = '#00ff00';
-                    });
-                    // Remove event listeners after first successful play
-                    document.removeEventListener('click', playOnInteraction);
-                    document.removeEventListener('keydown', playOnInteraction);
-                    document.removeEventListener('touchstart', playOnInteraction);
-                };
-                
-                // Listen for any user interaction
-                document.addEventListener('click', playOnInteraction);
-                document.addEventListener('keydown', playOnInteraction);
-                document.addEventListener('touchstart', playOnInteraction);
+                console.log('Auto-play failed, retrying...', error);
+                // Try again after 1 second
+                setTimeout(forcePlayMusic, 1000);
             });
+        }
+        
+        // Start trying to play immediately
+        window.addEventListener('load', forcePlayMusic);
+        
+        // Also try when user interacts with page (clicks, taps, etc.)
+        document.addEventListener('click', function() {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    console.log('🎵 Music started after click!');
+                });
+            }
         });
-
+        
         // Ensure music loops forever
         bgMusic.addEventListener('ended', function() {
             this.currentTime = 0;
@@ -504,4 +461,4 @@
         }, 8000);
     </script>
 </body>
-    </html>
+</html>
