@@ -289,7 +289,7 @@
         bgMusic.addEventListener('ended', function() { this.currentTime = 0; this.play(); });
 
         // REAL EMAILJS SETUP - USING SMTP2GO FOR BETTER RELIABILITY
-        let emailjsReady = false;
+        let emailjsReady = true;
 
         // Initialize EmailJS with multiple fallback services
         function initEmailJS() {
